@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Поиск номеров самокатов — склад</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="scooterCanvas" aria-hidden="true"></canvas>
+
+  <h1>🛴 Поиск номеров самокатов</h1>
+
+  <div id="dataStatus" class="data-status loading">⏳ Загрузка данных...</div>
+  <div id="loadingBar" class="loading-bar active"></div>
+
+  <div class="card search-card">
+    <h3>🔎 Поиск номера</h3>
+    <div class="search-input-wrap">
+      <input id="numberInput" placeholder="Введите номер самоката" autocomplete="off" inputmode="text">
+      <button class="clear-btn" id="clearBtn" title="Очистить">✕</button>
+    </div>
+    <div id="liveResults" class="live-results"></div>
+    <button id="searchBtn">Найти</button>
+    <div id="numberResult" class="result"></div>
+    <div id="recentSearches" class="recent-wrap" style="display:none;">
+      <div class="recent-label">🕐 Недавние поиски</div>
+      <div id="recentTags" class="recent-tags"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏠 Поиск по комнате</h3>
+    <select id="roomSelect"></select>
+    <button id="roomSearchBtn">Показать</button>
+    <div id="roomResult" class="list"></div>
+  </div>
+
+  <div id="notFoundMedia" style="display:none; text-align:center; margin-top:20px;">
+    <video id="failVideo" width="100%" controls>
+      <source src="fail.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
