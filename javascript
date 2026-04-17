@@ -1,5 +1,5 @@
 // --- КОНФИГУРАЦИЯ ---
-const SHEET_URL = "ТВОЯ_ССЫЛКА_НА_GOOGLE_SCRIPT";
+const SHEET_URL = "https://script.google.com/macros/s/AKfy";
 const canvas = document.getElementById('scooterCanvas');
 const ctx = canvas.getContext('2d');
 
