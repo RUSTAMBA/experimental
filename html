@@ -1,36 +1,202 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Поиск самокатов — Склад</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>Für meine Schönheit</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Great Vibes', cursive;
+    /* Глубокий темно-синий/фиолетовый фон для звезд */
+    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+    overflow: hidden;
+    color: white;
+}
+
+/* Карточка */
+.card {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Эффект матового стекла */
+    padding: 50px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    max-width: 450px;
+    z-index: 10;
+    animation: fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    font-size: 42px;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.compliment {
+    font-size: 28px;
+    line-height: 1.4;
+    color: #ffd700; /* Золотистый цвет */
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+/* Кнопки */
+.buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    height: 60px;
+}
+
+button {
+    padding: 12px 30px;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#yes {
+    background: #ffd700;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+#yes:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+}
+
+#no {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    position: relative; /* Для корректного перемещения */
+}
+
+/* Звезды */
+.star {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: twinkle var(--duration) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Финальный экран */
+.final-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #2a0845 0%, #000000 100%);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 100;
+}
+</style>
 </head>
+
 <body>
-    <canvas id="scooterCanvas" aria-hidden="true"></canvas>
 
-    <div class="container">
-        <h1>Поиск номеров самокатов</h1>
-
-        <div class="card search-card">
-            <h3>🔎 Поиск номера</h3>
-            <div class="search-input-wrap">
-                <input id="numberInput" placeholder="Введите номер..." autocomplete="off">
-            </div>
-            <button id="searchBtn">Найти</button>
-            <div id="numberResult" class="result"></div>
-        </div>
-
-        <div class="card">
-            <h3>🏠 Поиск по комнате</h3>
-            <select id="roomSelect">
-                <option value="">Загрузка комнат...</option>
-            </select>
-            <button id="roomBtn">Показать</button>
-            <div id="roomResult" class="list"></div>
-        </div>
+<div class="card" id="mainCard">
+    <h1>Darf ich dir etwas zeigen?</h1>
+    <div class="compliment">
+        Du bist wie die Sterne...
     </div>
+    <div class="buttons">
+        <button id="yes">Ja!</button>
+        <button id="no">Nein</button>
+    </div>
+</div>
 
-    <script src="script.js"></script>
+<div class="final-screen" id="finalScreen">
+    <h2 style="font-size: 60px; padding: 20px;">
+        ✨ Aber die Sterne leuchten nur nachts, <br> 
+        und du leuchtest immer! ✨
+    </h2>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const mainCard = document.getElementById("mainCard");
+const finalScreen = document.getElementById("finalScreen");
+
+// Функция убегания кнопки
+function moveButton() {
+    // Вычисляем случайные координаты внутри видимой области экрана
+    const padding = 50;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const x = Math.max(padding, Math.random() * maxX);
+    const y = Math.max(padding, Math.random() * maxY);
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseenter", moveButton);
+noBtn.addEventListener("click", moveButton); // На случай клика на мобилках
+
+// Обработка "Да"
+yesBtn.addEventListener("click", () => {
+    mainCard.style.display = "none";
+    finalScreen.style.display = "flex";
+    
+    // Добавим больше звезд на финальном экране
+    for(let i=0; i<100; i++) createStar();
+});
+
+// Создание мерцающих звезд
+function createStar() {
+    const star = document.createElement("div");
+    star.className = "star";
+    
+    const size = Math.random() * 3 + "px";
+    star.style.width = size;
+    star.style.height = size;
+    
+    star.style.left = Math.random() * 100 + "vw";
+    star.style.top = Math.random() * 100 + "vh";
+    
+    // Разная скорость мерцания
+    star.style.setProperty('--duration', (2 + Math.random() * 3) + 's');
+    
+    document.body.appendChild(star);
+}
+
+// Генерируем начальные звезды
+for (let i = 0; i < 150; i++) {
+    createStar();
+}
+</script>
+
 </body>
 </html>
